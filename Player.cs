@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Runtime.CompilerServices;
-using UnityEditor.SceneManagement;
 
 public class Player
 {
@@ -27,10 +26,5 @@ public class Player
     {
         Debug.Log(this.name + "-> HP: " + this.hp);
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        EditorSceneManager.LoadScene("Scene2");
-    }
-
 
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor.SceneManagement;
 
 public class Player1Controller : MonoBehaviour //operations below are all performed due to being inherited from class MonoBehavior
 {
@@ -22,9 +23,9 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
     void Update()
     {
         this.thePlayer.display();
-        if (Vector3.Distance(this.gameObject.transform.position, this.destinationGO.transform.position) > 2.0f)
+        if (Vector3.Distance(this.gameObject.transform.position, this.destinationGO.transform.position) > 1.0f)
         {
-            this.gameObject.transform.position = Vector3.Slerp(this.gameObject.transform.position, this.destinationGO.transform.position, this.speed * Time.deltaTime);
+            this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, this.destinationGO.transform.position, this.speed * Time.deltaTime);
         }
     }
 
