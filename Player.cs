@@ -24,7 +24,7 @@ public class Player
     }
     public void display()
     {
-        Debug.Log(this.name + "-> HP: " + this.hp);
+        
     }
 
 }

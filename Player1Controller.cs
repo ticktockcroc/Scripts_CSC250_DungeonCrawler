@@ -17,7 +17,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
 
     public TextMeshProUGUI playerName;
     public TextMeshProUGUI playerHp;
-    public GameObject destinationGO;
+    public GameObject stopPoint;
     private bool amMoving = false;
     private bool amAtStop = false;
 
@@ -72,7 +72,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         }
         else
         {
-            if(other.CompareTag("middleOfTheRoom") && !MySingleton.currentDirection.Equals("?"))
+            if(other.CompareTag("atStop") && !MySingleton.currentDirection.Equals("?"))
             {
                 print("At Middle of the Room");
                 this.amAtStop = true;
@@ -86,6 +86,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         if (Input.GetKeyUp(KeyCode.UpArrow) && !this.amMoving)
         {
             this.amMoving = true;
+            amAtStop = false;
             this.turnOnExits();
             MySingleton.currentDirection = "north";
             this.gameObject.transform.LookAt(this.northExit.transform.position);
@@ -93,6 +94,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         if (Input.GetKeyUp(KeyCode.DownArrow) && !this.amMoving)
         {
             this.amMoving = true;
+            amAtStop = false;
             this.turnOnExits();
             MySingleton.currentDirection = "south";
             this.gameObject.transform.LookAt(this.southExit.transform.position);
@@ -100,6 +102,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         if (Input.GetKeyUp(KeyCode.RightArrow) && !this.amMoving)
         {
             this.amMoving = true;
+            amAtStop = false;
             this.turnOnExits();
             MySingleton.currentDirection = "east";
             this.gameObject.transform.LookAt(this.eastExit.transform.position);
@@ -107,6 +110,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         if (Input.GetKeyUp(KeyCode.LeftArrow) && !this.amMoving)
         {
             this.amMoving = true;
+            amAtStop = false;
             this.turnOnExits();
             MySingleton.currentDirection = "west";
             this.gameObject.transform.LookAt(this.westExit.transform.position);
@@ -127,6 +131,12 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         if (MySingleton.currentDirection.Equals("west"))
         {
             this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, this.westExit.transform.position, this.speed * Time.deltaTime);
+        }
+
+        if(amAtStop == true)
+        {
+            amMoving = false;
+            this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, this.stopPoint.transform.position, this.speed * Time.deltaTime);
         }
     }
 
