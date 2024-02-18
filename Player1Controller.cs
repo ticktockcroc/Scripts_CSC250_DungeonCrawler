@@ -48,18 +48,22 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             if (MySingleton.currentDirection.Equals("north"))
             {
                 this.gameObject.transform.position = this.southExit.transform.position;
+                this.gameObject.transform.LookAt(this.stopPoint.transform.position);
             }
             if (MySingleton.currentDirection.Equals("south"))
             {
                 this.gameObject.transform.position = this.northExit.transform.position;
+                this.gameObject.transform.LookAt(this.stopPoint.transform.position);
             }
             if (MySingleton.currentDirection.Equals("east"))
             {
                 this.gameObject.transform.position = this.westExit.transform.position;
+                this.gameObject.transform.LookAt(this.stopPoint.transform.position);
             }
             if (MySingleton.currentDirection.Equals("west"))
             {
                 this.gameObject.transform.position = this.eastExit.transform.position;
+                this.gameObject.transform.LookAt(this.stopPoint.transform.position);
             }
         }
     }
