@@ -80,6 +80,8 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             {
                 print("At Middle of the Room");
                 this.amAtStop = true;
+                this.amMoving = false;
+                MySingleton.currentDirection = "middle";
             }
         }
     }
@@ -87,7 +89,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
     void Update()
     {
         this.thePlayer.display();
-        if (Input.GetKeyUp(KeyCode.UpArrow) && !this.amMoving)
+        if (Input.GetKeyUp(KeyCode.UpArrow) && this.amMoving == false)
         {
             this.amMoving = true;
             amAtStop = false;
@@ -95,7 +97,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             MySingleton.currentDirection = "north";
             this.gameObject.transform.LookAt(this.northExit.transform.position);
         }
-        if (Input.GetKeyUp(KeyCode.DownArrow) && !this.amMoving)
+        if (Input.GetKeyUp(KeyCode.DownArrow) && this.amMoving == false)
         {
             this.amMoving = true;
             amAtStop = false;
@@ -103,7 +105,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             MySingleton.currentDirection = "south";
             this.gameObject.transform.LookAt(this.southExit.transform.position);
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow) && !this.amMoving)
+        if (Input.GetKeyUp(KeyCode.RightArrow) && this.amMoving == false)
         {
             this.amMoving = true;
             amAtStop = false;
@@ -111,7 +113,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             MySingleton.currentDirection = "east";
             this.gameObject.transform.LookAt(this.eastExit.transform.position);
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow) && !this.amMoving)
+        if (Input.GetKeyUp(KeyCode.LeftArrow) && this.amMoving == false)
         {
             this.amMoving = true;
             amAtStop = false;
