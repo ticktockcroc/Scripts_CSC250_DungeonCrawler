@@ -9,6 +9,8 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
 {
     private Player thePlayer;
     public float speed = 5.0f;
+    private int numberOfExits;
+    private int roomSelect;
     public GameObject northExit;
     public GameObject southExit;
     public GameObject eastExit;
@@ -70,9 +72,88 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
 
     private void OnTriggerEnter(Collider other)
     {
+        numberOfExits = (int)Random.Range(1.0f, 4.0f);
         if (other.CompareTag("door"))
         {
-            EditorSceneManager.LoadScene("DungeonCrawler");
+            if (numberOfExits == 1)
+            {
+                if (other.gameObject.name == "NorthExit")
+                {
+                    EditorSceneManager.LoadScene("SouthExitOnly");
+                }
+                if (other.gameObject.name == "SouthExit")
+                {
+                    EditorSceneManager.LoadScene("NorthExitOnly");
+                    print("works fine");
+                }
+                if (other.gameObject.name == "EastExit")
+                {
+                    EditorSceneManager.LoadScene("WestExitOnly");
+                }
+                if (other.gameObject.name == "WestExit")
+                {
+                    EditorSceneManager.LoadScene("EastExitOnly");
+                }
+            }
+            if (numberOfExits == 2)
+            {
+                if (other.gameObject.name == "NorthExit")
+                {
+                    EditorSceneManager.LoadScene("NorthAndSouth");
+                }
+                if (other.gameObject.name == "SouthExit")
+                {
+                    EditorSceneManager.LoadScene("NorthAndSouth");
+                }
+                if (other.gameObject.name == "EastExit")
+                {
+                    EditorSceneManager.LoadScene("EastAndWest");
+                }
+                if (other.gameObject.name == "WestExit")
+                {
+                    EditorSceneManager.LoadScene("EastAndWest");
+                }
+            }
+            if (numberOfExits == 3)
+            {
+                if (other.gameObject.name == "SouthExit")
+                {
+                    roomSelect = (int)Random.Range(1.0f, 2.0f);
+                    if (roomSelect == 1)
+                    {
+                        EditorSceneManager.LoadScene("NorthSouthEast");
+                    }
+                    if (roomSelect == 2)
+                    {
+                        EditorSceneManager.LoadScene("NorthEastWest");
+                    }
+                }
+                if (other.gameObject.name == "NorthExit")
+                {
+                    EditorSceneManager.LoadScene("NorthSouthEast");
+                }
+                if (other.gameObject.name == "WestExit")
+                {
+                    roomSelect = (int)Random.Range(1.0f, 2.0f);
+                    if (roomSelect == 1)
+                    {
+                        EditorSceneManager.LoadScene("NorthSouthEast");
+                    }
+                    if (roomSelect == 2)
+                    {
+                        EditorSceneManager.LoadScene("NorthEastWest");
+                    }
+                }
+                if (other.gameObject.name == "EastExit")
+                {
+                    EditorSceneManager.LoadScene("NorthEastWest");
+                }
+            }
+            if (numberOfExits == 4)
+            {
+                EditorSceneManager.LoadScene("DungeonCrawler");
+            }
+
         }
         else
         {
