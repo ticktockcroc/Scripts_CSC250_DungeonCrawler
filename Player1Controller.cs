@@ -44,6 +44,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         this.thePlayer = new Player("John");
         SetCountText();
         this.turnOffExits();
+        StartCoroutine(keepEntryDoorOpen());
 
         if(!MySingleton.currentDirection.Equals("?"))
         {
@@ -70,90 +71,11 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) //updated to include scene shift back if entered a previous exit
     {
-        numberOfExits = (int)Random.Range(1.0f, 4.0f);
         if (other.CompareTag("door"))
         {
-            if (numberOfExits == 1)
-            {
-                if (other.gameObject.name == "NorthExit")
-                {
-                    EditorSceneManager.LoadScene("SouthExitOnly");
-                }
-                if (other.gameObject.name == "SouthExit")
-                {
-                    EditorSceneManager.LoadScene("NorthExitOnly");
-                    print("works fine");
-                }
-                if (other.gameObject.name == "EastExit")
-                {
-                    EditorSceneManager.LoadScene("WestExitOnly");
-                }
-                if (other.gameObject.name == "WestExit")
-                {
-                    EditorSceneManager.LoadScene("EastExitOnly");
-                }
-            }
-            if (numberOfExits == 2)
-            {
-                if (other.gameObject.name == "NorthExit")
-                {
-                    EditorSceneManager.LoadScene("NorthAndSouth");
-                }
-                if (other.gameObject.name == "SouthExit")
-                {
-                    EditorSceneManager.LoadScene("NorthAndSouth");
-                }
-                if (other.gameObject.name == "EastExit")
-                {
-                    EditorSceneManager.LoadScene("EastAndWest");
-                }
-                if (other.gameObject.name == "WestExit")
-                {
-                    EditorSceneManager.LoadScene("EastAndWest");
-                }
-            }
-            if (numberOfExits == 3)
-            {
-                if (other.gameObject.name == "SouthExit")
-                {
-                    roomSelect = (int)Random.Range(1.0f, 2.0f);
-                    if (roomSelect == 1)
-                    {
-                        EditorSceneManager.LoadScene("NorthSouthEast");
-                    }
-                    if (roomSelect == 2)
-                    {
-                        EditorSceneManager.LoadScene("NorthEastWest");
-                    }
-                }
-                if (other.gameObject.name == "NorthExit")
-                {
-                    EditorSceneManager.LoadScene("NorthSouthEast");
-                }
-                if (other.gameObject.name == "WestExit")
-                {
-                    roomSelect = (int)Random.Range(1.0f, 2.0f);
-                    if (roomSelect == 1)
-                    {
-                        EditorSceneManager.LoadScene("NorthSouthEast");
-                    }
-                    if (roomSelect == 2)
-                    {
-                        EditorSceneManager.LoadScene("NorthEastWest");
-                    }
-                }
-                if (other.gameObject.name == "EastExit")
-                {
-                    EditorSceneManager.LoadScene("NorthEastWest");
-                }
-            }
-            if (numberOfExits == 4)
-            {
-                EditorSceneManager.LoadScene("DungeonCrawler");
-            }
-
+            EditorSceneManager.LoadScene("DungeonCrawler");
         }
         else
         {
@@ -166,11 +88,34 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             }
         }
     }
-
+    public IEnumerator keepEntryDoorOpen() //makes sure that door entered from is set to active***************************************************************
+    {                                       // in order to return to previous room
+        if(MySingleton.currentDirection.Equals("north"))
+        {
+            yield return new WaitUntil(() => MySingleton.currentDirection == "middle");
+            this.southExit.gameObject.SetActive(true);
+        }
+        if (MySingleton.currentDirection.Equals("south"))
+        {
+            yield return new WaitUntil(() => MySingleton.currentDirection == "middle");
+            this.northExit.gameObject.SetActive(true);
+        }
+        if (MySingleton.currentDirection.Equals("east"))
+        {
+            yield return new WaitUntil(() => MySingleton.currentDirection == "middle");
+            this.westExit.gameObject.SetActive(true);
+        }
+        if (MySingleton.currentDirection.Equals("west"))
+        {
+            yield return new WaitUntil(() => MySingleton.currentDirection == "middle");
+            this.eastExit.gameObject.SetActive(true);
+        }
+    }
+    //*****************************************************************************************************************************************************
     void Update()
     {
         this.thePlayer.display();
-        if (Input.GetKeyUp(KeyCode.UpArrow) && this.amMoving == false)
+        if (Input.GetKeyUp(KeyCode.UpArrow) && this.amMoving == false && MySingleton.theCurrentRoom.isOpenDoor("north"))
         {
             this.amMoving = true;
             amAtStop = false;
@@ -178,7 +123,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             MySingleton.currentDirection = "north";
             this.gameObject.transform.LookAt(this.northExit.transform.position);
         }
-        if (Input.GetKeyUp(KeyCode.DownArrow) && this.amMoving == false)
+        if (Input.GetKeyUp(KeyCode.DownArrow) && this.amMoving == false && MySingleton.theCurrentRoom.isOpenDoor("south"))
         {
             this.amMoving = true;
             amAtStop = false;
@@ -186,7 +131,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             MySingleton.currentDirection = "south";
             this.gameObject.transform.LookAt(this.southExit.transform.position);
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow) && this.amMoving == false)
+        if (Input.GetKeyUp(KeyCode.RightArrow) && this.amMoving == false && MySingleton.theCurrentRoom.isOpenDoor("east"))
         {
             this.amMoving = true;
             amAtStop = false;
@@ -194,7 +139,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             MySingleton.currentDirection = "east";
             this.gameObject.transform.LookAt(this.eastExit.transform.position);
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow) && this.amMoving == false)
+        if (Input.GetKeyUp(KeyCode.LeftArrow) && this.amMoving == false && MySingleton.theCurrentRoom.isOpenDoor("west"))
         {
             this.amMoving = true;
             amAtStop = false;
