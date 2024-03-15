@@ -18,12 +18,12 @@ public class Room
     }
     public void addPlayer(Player thePlayer) 
     { 
-        this.currentPlayer = MySingleton.thePlayer;
+        this.currentPlayer = thePlayer;
         this.currentPlayer.setCurrentRoom(this);
     }
     public void addExit(string direction, Room destinationRoom)
     {
-        if (this.howManyExits > this.theExits.Length)
+        if (this.howManyExits < this.theExits.Length)
         {
             Exit e = new Exit(direction, destinationRoom);
             this.theExits[howManyExits] = e;

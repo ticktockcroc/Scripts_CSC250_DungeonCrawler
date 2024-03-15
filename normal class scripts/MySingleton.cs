@@ -10,7 +10,7 @@ public class MySingleton
     public static Player thePlayer;
     public static Dungeon theDungeon = MySingleton.generateDungeon();
 
-    public static Dungeon generateDungeon()
+    private static Dungeon generateDungeon()
     {
         Room r1 = new Room("R1");
         Room r2 = new Room("R2");
@@ -20,9 +20,10 @@ public class MySingleton
         Room r6 = new Room("R6");
 
         MySingleton.theDungeon = new Dungeon("superHappyFunFunLand");
-        MySingleton.theDungeon.setStartRoom(r1);
+        theDungeon.setStartRoom(r1);
         MySingleton.thePlayer = new Player("John");
         theDungeon.addPlayer(MySingleton.thePlayer);
+        theDungeon.setSecondRoom(r2); //set the second room to be used by other classes
 
         r1.addExit("north", r2);
         r2.addExit("south", r1);

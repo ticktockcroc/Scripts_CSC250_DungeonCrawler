@@ -6,10 +6,11 @@ using UnityEngine;
 public class DungeonMaster : MonoBehaviour
 {
     public GameObject northDoor, southDoor, eastDoor, westDoor;
-    // Start is called before the first frame update
+
     void Start()
     {
         Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom();
+        
         if(theCurrentRoom.hasExit("north"))
         {
             this.northDoor.SetActive(false);
@@ -30,6 +31,9 @@ public class DungeonMaster : MonoBehaviour
                 // Update is called once per frame
             void Update()
     {
-        
+        if(MySingleton.thePlayer.getCurrentRoom().Equals("R1")) //ask for current room, specifically r1
+        {
+            MySingleton.thePlayer.setCurrentRoom(MySingleton.theDungeon.getSecondRoom()); //set the room to r2
+        }
     }
 }
