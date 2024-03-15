@@ -145,13 +145,6 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         {
             this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, this.westExit.transform.position, this.speed * Time.deltaTime);
         }
-
-        if(amAtStop == true) //for some reason this is triggering before the player can move, thus keeping the player gameObject stuck at stopPoint
-        {
-            amMoving = false;
-            Debug.Log("I have one question: WHHHYYYYYYY");
-            this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, this.stopPoint.transform.position, this.speed * Time.deltaTime);
-        }
     }
 
     void SetCountText()
