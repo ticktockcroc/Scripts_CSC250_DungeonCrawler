@@ -31,9 +31,6 @@ public class DungeonMaster : MonoBehaviour
                 // Update is called once per frame
             void Update()
     {
-        if(MySingleton.thePlayer.getCurrentRoom().Equals("R1")) //ask for current room, specifically r1
-        {
-            MySingleton.thePlayer.setCurrentRoom(MySingleton.theDungeon.getSecondRoom()); //set the room to r2
-        }
+
     }
 }

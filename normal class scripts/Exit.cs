@@ -13,6 +13,10 @@ public class Exit
         this.destinationRoom = destinationRoom;
     }
 
+    public Room getDestinationRoom()
+    {
+        return this.destinationRoom;
+    }
     public string getDirection()
     {
         return this.direction;

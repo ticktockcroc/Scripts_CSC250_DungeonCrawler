@@ -16,6 +16,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
 
     public TextMeshProUGUI playerName;
     public TextMeshProUGUI playerHp;
+    public TextMeshProUGUI playerScore;
     public GameObject stopPoint;
     private bool amMoving = false;
     private bool amAtStop = false;
@@ -41,6 +42,7 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         SetCountText();
         this.turnOffExits();
         this.stopPoint.SetActive(false);
+        MySingleton.isPelletActive = true;
 
         if(!MySingleton.currentDirection.Equals("?"))
         {
@@ -78,10 +80,11 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         }
     }
 
-    private void OnTriggerEnter(Collider other) //updated to include scene shift back if entered a previous exit
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("door"))
         {
+            MySingleton.thePlayer.getCurrentRoom().removePlayer(MySingleton.currentDirection); //remove player from current room and place in destination prior to loading the scene
             EditorSceneManager.LoadScene("DungeonCrawler");
         }
         else
@@ -96,10 +99,18 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
                 MySingleton.currentDirection = "middle";
             }
         }
+        if(other.CompareTag("powerPellet")) //player detects powerPellet trigger
+        {
+            other.gameObject.SetActive(false);
+            MySingleton.thePlayer.addScore();
+            MySingleton.thePlayer.getCurrentRoom().removePellet(MySingleton.currentDirection);
+        }
     }
    
     void Update()
     {
+        displayTextChanges();
+
         if (Input.GetKeyUp(KeyCode.UpArrow) && !this.amMoving && MySingleton.thePlayer.getCurrentRoom().hasExit("north"))
         {
             this.amMoving = true;
@@ -151,5 +162,13 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
     {
         this.playerName.text = MySingleton.thePlayer.getName();
         this.playerHp.text = "HP : " + MySingleton.thePlayer.getHP().ToString();
+        this.playerScore.text = "Score : " + MySingleton.thePlayer.getScore().ToString();
+    }
+
+    void displayTextChanges()
+    {
+        this.playerName.text = MySingleton.thePlayer.getName();
+        this.playerHp.text = "HP : " + MySingleton.thePlayer.getHP().ToString();
+        this.playerScore.text = "Score : " + MySingleton.thePlayer.getScore().ToString();
     }
 }

@@ -19,14 +19,6 @@ public class Dungeon
         this.startRoom = r;
     }
 
-    public void setSecondRoom(Room r) //add way to keep track of current room in a dungeon
-    {
-        this.currentRoom = r;
-    }
-    public Room getSecondRoom() 
-    {
-        return this.currentRoom;
-    }
     public void addPlayer(Player thePlayer) 
     { 
         this.thePlayer = MySingleton.thePlayer;
