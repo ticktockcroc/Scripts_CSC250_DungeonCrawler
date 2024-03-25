@@ -13,6 +13,10 @@ public class Room
     private int howManyPellets = 0;
 
     private Player currentPlayer;
+    private Pellet northPellet = null; //does not violate abstract class due to being set to null
+    private Pellet southPellet = null;
+    private Pellet eastPellet = null;
+    private Pellet westPellet = null;
 
     public Room(string name)
     {
@@ -51,27 +55,71 @@ public class Room
             Exit e = new Exit(direction, destinationRoom);
             this.theExits[howManyExits] = e;
             this.howManyExits++;
+
+            if(direction.Equals("north"))
+            {
+                this.northPellet = new ArmorPellet();
+            }
+            else if (direction.Equals("south")) // else statements in front of ifs makes questioning more efficient, if using just ifs each question will be asked every time
+            {
+                this.southPellet = new ArmorPellet();
+            }
+            else if (direction.Equals("east"))
+            {
+                this.eastPellet = new ArmorPellet();
+            }
+            else if (direction.Equals("west"))
+            {
+                this.westPellet = new ArmorPellet();
+            }
         }
     }
 
-    public void addPellet(string name, string direction)
+    public void addPellet(Pellet p, string direction) // also not instance of Pellet, just and empty variable
     {
-        if (this.howManyPellets < this.thePellets.Length)
+        if(direction.Equals("north"))
         {
-            Pellet p = new Pellet(name, direction);
-            this.thePellets[howManyPellets] = p;
-            this.howManyPellets++;
+            this.northPellet = p;
+        }
+        else if (direction.Equals("south"))
+        {
+            this.southPellet = p;
+        }
+        else if (direction.Equals("east"))
+        {
+            this.eastPellet = p;
+        }
+        else if (direction.Equals("west"))
+        {
+            this.westPellet = p;
+        }
+        else
+        {
+            Debug.Log("Invalid direction");
         }
     }
 
     public void removePellet(string direction) //way to remove pellets once they have been collected
     {
-        for(int pR = 0; pR < this.howManyPellets;  pR++)
+        if (direction.Equals("north"))
         {
-            if (this.thePellets[pR].getPelletDirection().Equals(direction))
-            {
-                this.thePellets[pR] = null;
-            }
+            this.northPellet = null;
+        }
+        else if (direction.Equals("south"))
+        {
+            this.southPellet = null;
+        }
+        else if (direction.Equals("east"))
+        {
+            this.eastPellet = null;
+        }
+        else if (direction.Equals("west"))
+        {
+            this.westPellet = null;
+        }
+        else
+        {
+            Debug.Log("Invalid direction");
         }
     }
     public bool hasExit(string direction)
@@ -87,13 +135,26 @@ public class Room
     }
     public bool hasPellet(string direction)
     {
-        for (int i = 0; i < this.howManyPellets; i++)
+        if (direction.Equals("north"))
         {
-            if (this.thePellets[i].getPelletDirection().Equals(direction))
-            {
-                return true;
-            }
+            return this.northPellet != null;
         }
-        return false;
+        else if (direction.Equals("south"))
+        {
+            return this.southPellet != null;
+        }
+        else if (direction.Equals("east"))
+        {
+            return this.eastPellet != null;
+        }
+        else if (direction.Equals("west"))
+        {
+            return this.westPellet != null;
+        }
+        else
+        {
+            Debug.Log("Invalid direction");
+            return false; // could also put at the end of function outside of if-else statements to guaruntee, but code might not like it
+        }
     }
 }

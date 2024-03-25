@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pellet
+public abstract class Pellet
 {
-    private string pelletName;
+    protected string pelletName;
     private string direction;
+    protected int bonus;
 
-    public Pellet (string name, string direction)
+    public Pellet (int bonus)
     {
-        this.pelletName = name;
-        this.direction = direction;
+        this.bonus = bonus;
+        this.pelletName = "Pellet";
     }
 
     public string getPelletName()

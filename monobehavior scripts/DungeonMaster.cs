@@ -6,12 +6,18 @@ using UnityEngine;
 public class DungeonMaster : MonoBehaviour
 {
     public GameObject northDoor, southDoor, eastDoor, westDoor;
+    public GameObject northPellet, southPellet, eastPellet, westPellet;
 
     void Start()
     {
+        this.setDoors();
+        this.setPellets();
+    }
+
+    private void setDoors() //all doors on by default, turn off doors that should not be there
+    {
         Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom();
-        
-        if(theCurrentRoom.hasExit("north"))
+        if (theCurrentRoom.hasExit("north"))
         {
             this.northDoor.SetActive(false);
         }
@@ -28,8 +34,28 @@ public class DungeonMaster : MonoBehaviour
             this.westDoor.SetActive(false);
         }
     }
-                // Update is called once per frame
-            void Update()
+    private void setPellets() // all pellets on by default, turn off pellets that should not be there
+    {
+        Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom();
+        if (!theCurrentRoom.hasPellet("north"))
+        {
+            this.northPellet.SetActive(false);
+        }
+        if (!theCurrentRoom.hasPellet("south"))
+        {
+            this.southPellet.SetActive(false);
+        }
+        if (!theCurrentRoom.hasPellet("east"))
+        {
+            this.eastPellet.SetActive(false);
+        }
+        if (!theCurrentRoom.hasPellet("west"))
+        {
+            this.westPellet.SetActive(false);
+        }
+    }
+    // Update is called once per frame
+    void Update()
     {
 
     }

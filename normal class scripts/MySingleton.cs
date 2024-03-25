@@ -12,6 +12,31 @@ public class MySingleton
     public static int score = 0;
     public static Dungeon theDungeon = MySingleton.generateDungeon();
     public static bool isPelletActive = true;
+    public static bool firstDungeonEntry = true;
+
+    public static string flipDirection(string direction)
+    {
+        if (direction.Equals("north"))
+        {
+            return "south";
+        }
+        else if (direction.Equals("south"))
+        {
+            return "north";
+        }
+        else if (direction.Equals("east"))
+        {
+            return "west";
+        }
+        else if (direction.Equals("west"))
+        {
+            return "east";
+        }
+        else
+        {
+            return "n/a";
+        }
+    }
 
     private static Dungeon generateDungeon()
     {
@@ -37,28 +62,6 @@ public class MySingleton
         r4.addExit("east", r3);
         r5.addExit("west", r3);
         r6.addExit("south", r3);
-
-        r1.addPellet("p1", "north"); //adds pellets to each room
-        r2.addPellet("p2", "north");
-        r2.addPellet("p3", "south");
-        r3.addPellet("p4", "north");
-        r3.addPellet("p5", "south");
-        r3.addPellet("p6", "east");
-        r3.addPellet("p7", "west");
-        r4.addPellet("p8", "east");
-        r5.addPellet("p9", "west");
-        r6.addPellet("p10", "south");
-
-        /*r1.removePellet("p1"); //all these must go in an if statement determining whether or not a pellet gameObject has been deactivated
-        r2.removePellet("p2");
-        r2.removePellet("p3");
-        r3.removePellet("p4");
-        r3.removePellet("p5");
-        r3.removePellet("p6");
-        r3.removePellet("p7");
-        r4.removePellet("p8");
-        r5.removePellet("p9");
-        r6.removePellet("p10");*/
 
         return theDungeon;
     }

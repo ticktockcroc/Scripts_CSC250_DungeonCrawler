@@ -101,9 +101,11 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         }
         if(other.CompareTag("powerPellet")) //player detects powerPellet trigger
         {
-            other.gameObject.SetActive(false);
-            MySingleton.thePlayer.addScore();
-            MySingleton.thePlayer.getCurrentRoom().removePellet(MySingleton.currentDirection);
+            other.gameObject.SetActive(false); //visually makes pellet disappear
+
+            Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom(); //programatically make sure pellet doesn't show up again
+            theCurrentRoom.removePellet(MySingleton.currentDirection);
+            EditorSceneManager.LoadScene("Battle");
         }
     }
    
