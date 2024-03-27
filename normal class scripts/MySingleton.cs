@@ -9,6 +9,7 @@ public class MySingleton
     // Start is called before the first frame update
     public static string currentDirection = "?";
     public static Player thePlayer;
+    public static BlobMonster bob;
     public static int score = 0;
     public static Dungeon theDungeon = MySingleton.generateDungeon();
     public static bool isPelletActive = true;
@@ -50,6 +51,7 @@ public class MySingleton
         MySingleton.theDungeon = new Dungeon("superHappyFunFunLand");
         theDungeon.setStartRoom(r1);
         MySingleton.thePlayer = new Player("John");
+        MySingleton.bob = new BlobMonster("Bob");
         theDungeon.addPlayer(MySingleton.thePlayer);
 
         r1.addExit("north", r2); //adds exits to the rooms

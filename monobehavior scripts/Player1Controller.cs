@@ -101,11 +101,11 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         }
         if(other.CompareTag("powerPellet")) //player detects powerPellet trigger
         {
-            other.gameObject.SetActive(false); //visually makes pellet disappear
-
-            Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom(); //programatically make sure pellet doesn't show up again
-            theCurrentRoom.removePellet(MySingleton.currentDirection);
             EditorSceneManager.LoadScene("Battle");
+            other.gameObject.SetActive(false); //visually makes pellet disappear
+            MySingleton.thePlayer.addScore();
+            Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom(); //programatically make sure pellet doesn't show up again
+            theCurrentRoom.removePellet(other.GetComponent<PelletController>().pelletDirection);// pellets show directions specifically, not reliant on player's current direction
         }
     }
    
@@ -162,14 +162,14 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
 
     void SetCountText()
     {
-        this.playerName.text = MySingleton.thePlayer.getName();
+        this.playerName.text = MySingleton.thePlayer.getMonsterName();
         this.playerHp.text = "HP : " + MySingleton.thePlayer.getHP().ToString();
         this.playerScore.text = "Score : " + MySingleton.thePlayer.getScore().ToString();
     }
 
     void displayTextChanges()
     {
-        this.playerName.text = MySingleton.thePlayer.getName();
+        this.playerName.text = MySingleton.thePlayer.getMonsterName();
         this.playerHp.text = "HP : " + MySingleton.thePlayer.getHP().ToString();
         this.playerScore.text = "Score : " + MySingleton.thePlayer.getScore().ToString();
     }
