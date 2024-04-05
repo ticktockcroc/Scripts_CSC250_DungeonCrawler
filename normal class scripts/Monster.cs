@@ -40,14 +40,9 @@ public abstract class Monster
     {
         this.currentRoom = r;
     }
-    public void takeDamage()
+    public void takeDamage(int damage)
     {
-        this.damage = (int)Random.Range(0.0f, 6.0f);
-        this.hp = this.hp - this.damage;
-    }
-    public int offensive()
-    {
-        this.attack = (int)Random.Range(0.0f, 20.0f);
-        return this.attack;
+        this.hp = this.hp - damage;
+        setHP(this.hp);
     }
 }
