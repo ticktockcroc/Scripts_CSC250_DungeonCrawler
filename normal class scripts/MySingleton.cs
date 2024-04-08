@@ -14,6 +14,7 @@ public class MySingleton
     public static Dungeon theDungeon = MySingleton.generateDungeon();
     public static bool isPelletActive = true;
     public static bool firstDungeonEntry = true;
+    public static bool getsPellet = false;
 
     public static string flipDirection(string direction)
     {

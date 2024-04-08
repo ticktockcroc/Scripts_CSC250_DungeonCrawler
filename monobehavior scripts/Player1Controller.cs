@@ -13,6 +13,10 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
     public GameObject eastExit;
     public GameObject westExit;
 
+    public GameObject northPellet;
+    public GameObject southPellet;
+    public GameObject eastPellet;
+    public GameObject westPellet;
 
     public TextMeshProUGUI playerName;
     public TextMeshProUGUI playerHp;
@@ -78,6 +82,28 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
             this.stopPoint.SetActive(false);
             this.gameObject.transform.position = this.stopPoint.transform.position;
         }
+        Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom(); //programatically make sure pellet doesn't show up
+        if(MySingleton.getsPellet == true)
+        {
+            if (MySingleton.currentDirection.Equals("north"))
+            {
+                this.northPellet.gameObject.SetActive(false);
+            }
+            else if (MySingleton.currentDirection.Equals("south"))
+            {
+                this.southPellet.gameObject.SetActive(false);
+            }
+            else if (MySingleton.currentDirection.Equals("east"))
+            {
+                this.eastPellet.gameObject.SetActive(false);
+            }
+            else if (MySingleton.currentDirection.Equals("west"))
+            {
+                this.westPellet.gameObject.SetActive(false);
+            }
+            theCurrentRoom.removePellet(MySingleton.currentDirection); //remove pellet in the player's current direction
+            MySingleton.getsPellet = false; // set back to false for next pellet
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -102,10 +128,9 @@ public class Player1Controller : MonoBehaviour //operations below are all perfor
         if(other.CompareTag("powerPellet")) //player detects powerPellet trigger
         {
             EditorSceneManager.LoadScene("Battle");
-            other.gameObject.SetActive(false); //visually makes pellet disappear
-            MySingleton.thePlayer.addScore();
-            Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom(); //programatically make sure pellet doesn't show up again
-            theCurrentRoom.removePellet(other.GetComponent<PelletController>().pelletDirection);// pellets show directions specifically, not reliant on player's current direction
+            //other.gameObject.SetActive(false); //visually makes pellet disappear
+            //Room theCurrentRoom = MySingleton.thePlayer.getCurrentRoom(); //programatically make sure pellet doesn't show up again
+            //theCurrentRoom.removePellet(other.GetComponent<PelletController>().pelletDirection);// pellets show directions specifically, not reliant on player's current direction
         }
     }
    

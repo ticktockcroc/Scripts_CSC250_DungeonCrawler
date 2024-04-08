@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
     public GameObject chick, monster, middle, playerPoint, monsterPoint;
-    public TextMeshProUGUI chick_hp_TMP, monster_hp_TMP, chick_damage_TMP, monster_Damage_TMP;
-    public GameObject currentAttacker;
+    public TextMeshProUGUI chick_hp_TMP, monster_hp_TMP, battleCommentary;
+    private GameObject currentAttacker;
     public float attackSpeed = 5.0f;
     private Animator theCurrentAnimator;
     private bool shouldAttack = true;
     // Start is called before the first frame update
     void Start()
     {
+        this.battleCommentary.text = "";
         int num = Random.Range(0, 2); //coin flip will produce 0 and 1
         displayTheText();
 
@@ -31,7 +33,7 @@ public class MonsterController : MonoBehaviour
     
     IEnumerator fight()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         if (this.shouldAttack) 
         { 
             this.theCurrentAnimator = this.currentAttacker.GetComponent<Animator>();
@@ -44,7 +46,9 @@ public class MonsterController : MonoBehaviour
 
                 if (MySingleton.bob.getHP() <= 0)
                 {
-                    print("Hero Wins!");
+                    this.monster.transform.Rotate(-90, 0, 0);
+                    this.battleCommentary.color = Color.yellow;
+                    this.battleCommentary.text = "You Win!";
                     this.shouldAttack = false;
                 }
                 else
@@ -60,7 +64,9 @@ public class MonsterController : MonoBehaviour
 
                 if (MySingleton.thePlayer.getHP() <= 0)
                 {
-                    print("Monster Wins!");
+                    this.chick.transform.Rotate(90, 0, 0);
+                    this.battleCommentary.color = Color.black;
+                    this.battleCommentary.text = "You died...";
                     this.shouldAttack = false;
                 }
                 else
@@ -74,7 +80,19 @@ public class MonsterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(MySingleton.thePlayer.getHP() <=0) //returns player to the scene without score increase and pellet removal
+        {
+            MySingleton.thePlayer.setHP((int)Random.Range(10.0f, 20.0f));
+            EditorSceneManager.LoadScene("DungeonCrawler");
+            
+        }
+        else if(MySingleton.bob.getHP() <= 0) //returns player to the scene with score increase and pellet removal
+        {
+            MySingleton.getsPellet = true;
+            MySingleton.thePlayer.addScore();
+            MySingleton.bob.setHP((int)Random.Range(10.0f, 20.0f));
+            EditorSceneManager.LoadScene("DungeonCrawler");
+        }
     }
     void displayTheText()
     {
@@ -84,31 +102,20 @@ public class MonsterController : MonoBehaviour
     private void tryAttack(Monster attacker, Monster defender)
     {
         // have attacker try to attack defender
+        this.battleCommentary.text = "";
         int attackRoll = Random.Range(0, 20) + 1;
         if (attackRoll >= defender.getArmor())
         {
             //the attacker will hit the defender for a random amount of damage
             int damageRoll = Random.Range(0, 4) + 2; //generates 0-3, adds 2 to get 2 - 5
             defender.takeDamage(damageRoll);
-            this.chick_damage_TMP.text.SetActive("true");
-            StartCoroutine(takeDamageChick());
-            this.monster_Damage_TMP.text.SetActive("true");
-            StartCoroutine(takeDamageMonster());
+            this.battleCommentary.color = Color.red;
+            this.battleCommentary.text = "Attack did " + damageRoll + " damage";
         }
         else
         {
-            print("Attacker Missed!");
+            this.battleCommentary.color = Color.blue;
+            this.battleCommentary.text = "Attacker Missed!";
         }
     }
-    IEnumerator takeDamageChick()
-    {
-        yield return new WaitForSeconds(1);
-        this.chick_damage_TMP.text.SetActive("false");
-    }
-    IEnumerator takeDamageMonster()
-    {
-        yield return new WaitForSeconds(1);
-        this.monster_Damage_TMP.text.SetActive("false");
-    }
-
 }
