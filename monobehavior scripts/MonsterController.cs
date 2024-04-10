@@ -12,6 +12,7 @@ public class MonsterController : MonoBehaviour
     public float attackSpeed = 5.0f;
     private Animator theCurrentAnimator;
     private bool shouldAttack = true;
+    private int damageRoll;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,18 +81,17 @@ public class MonsterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(MySingleton.thePlayer.getHP() <=0) //returns player to the scene without score increase and pellet removal
+        if(MySingleton.thePlayer.getHP() <=0 && Input.GetKeyUp(KeyCode.Space)) //returns player to the scene without score increase and pellet removal
         {
             MySingleton.thePlayer.setHP((int)Random.Range(10.0f, 20.0f));
-            EditorSceneManager.LoadScene("DungeonCrawler");
-            
+            EditorSceneManager.LoadScene("ShopKeeper");
         }
-        else if(MySingleton.bob.getHP() <= 0) //returns player to the scene with score increase and pellet removal
+        else if(MySingleton.bob.getHP() <= 0 && Input.GetKeyUp(KeyCode.Space)) //returns player to the scene with score increase and pellet removal
         {
             MySingleton.getsPellet = true;
             MySingleton.thePlayer.addScore();
             MySingleton.bob.setHP((int)Random.Range(10.0f, 20.0f));
-            EditorSceneManager.LoadScene("DungeonCrawler");
+            EditorSceneManager.LoadScene("ShopKeeper");
         }
     }
     void displayTheText()
@@ -106,8 +106,16 @@ public class MonsterController : MonoBehaviour
         int attackRoll = Random.Range(0, 20) + 1;
         if (attackRoll >= defender.getArmor())
         {
+            if (this.currentAttacker == this.chick)
+            {
+                damageRoll = (Random.Range(0, 4) + 2) + MySingleton.thePlayer.returnAttack(); //generates 0-3, adds 2 to get 2 - 5, adds current attack of the player
+            }
+            else
+            {
+                damageRoll = Random.Range(0, 4) + 2; //generates 0-3, adds 2 to get 2 - 5
+            }
             //the attacker will hit the defender for a random amount of damage
-            int damageRoll = Random.Range(0, 4) + 2; //generates 0-3, adds 2 to get 2 - 5
+            damageRoll = Random.Range(0, 4) + 2; //generates 0-3, adds 2 to get 2 - 5
             defender.takeDamage(damageRoll);
             this.battleCommentary.color = Color.red;
             this.battleCommentary.text = "Attack did " + damageRoll + " damage";

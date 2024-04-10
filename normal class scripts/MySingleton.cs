@@ -15,6 +15,7 @@ public class MySingleton
     public static bool isPelletActive = true;
     public static bool firstDungeonEntry = true;
     public static bool getsPellet = false;
+    public static int playerAttack;
 
     public static string flipDirection(string direction)
     {

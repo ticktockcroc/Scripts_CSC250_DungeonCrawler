@@ -45,4 +45,8 @@ public abstract class Monster
         this.hp = this.hp - damage;
         setHP(this.hp);
     }
+    public int returnAttack()
+    {
+        return this.attack;
+    }
 }
