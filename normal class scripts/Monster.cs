@@ -28,6 +28,10 @@ public abstract class Monster
     {
         this.hp = hp;
     }
+    public void setAttack(int attack)
+    {
+        this.attack = attack;
+    }
     public int getArmor()
     {
         return this.armor;
