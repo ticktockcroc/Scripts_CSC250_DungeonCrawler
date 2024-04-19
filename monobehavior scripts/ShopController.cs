@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using JetBrains.Annotations;
 using UnityEditor.SceneManagement;
+using System.IO; // need this for files
+using System; // need this for try-catch statements
 
 public class ShopController : MonoBehaviour
 {
@@ -19,6 +21,95 @@ public class ShopController : MonoBehaviour
         this.hpText.color = Color.white;
         this.hpText.text = "HP Potion";
         this.pelletAmount.text = "Score: " + MySingleton.thePlayer.getScore().ToString();
+
+        this.readItemsData(); //read plain text file
+
+        string jsonString = this.readItemsDataJson(); //read JSON file with serialization
+
+        RootObject root = JsonUtility.FromJson<RootObject>(jsonString); //parse the JSON string
+
+        foreach (var item in root.items) //output data to the console
+        {
+            print($"Name: {item.name}, Stat Impacted: {item.stat_impacted}, Modifier: {item.modifier}");
+        }
+    }
+
+    private void readItemsData()
+    {
+        string filePath = "Assets/Data Files/items_data.txt";
+        string answer = "";
+
+        if(File.Exists(filePath)) // check if file exists
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath)) // open file to read from
+                {
+                    string line;
+                    string[] itemParts = new string[3];
+                    int pos = 0;
+
+                    while((line = reader.ReadLine()) != null) // read lines from the file until the end of the file is reached
+                    {
+                        string[] parts = line.Split(",");
+                        for(int i = 0; i < parts.Length; i++)
+                        {
+                            print(parts[i]);
+                            itemParts[pos % 3] = parts[i];
+                            pos++;
+                        }
+                        print("Manually parsed with item object");
+                        Item theItem = new Item(itemParts[0], itemParts[1], int.Parse(itemParts[2]));
+                        theItem.display();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                print("An error occurred while reading the file");
+                print(ex.Message);
+            }
+        }
+        else
+        {
+            print("The File does not exist");
+        }
+
+    }
+
+    private string readItemsDataJson()
+    {
+        string filePath = "Assets/Data Files/items_data_json.txt";
+        string answer = "";
+
+        if(File.Exists(filePath))
+        {
+            try
+            {
+                print("Serialized JSON Parsing");
+
+                using (StreamReader reader = new StreamReader(filePath)) // open file to read from
+                {
+                    string line;
+                    while((line = reader.ReadLine()) != null)
+                    {
+                        answer = answer + line;
+                    }
+                    return answer;
+                }
+            }
+            catch(Exception ex) // display any errors that occurred during file reading
+            {
+                print("An error occurred while reading the file");
+                print(ex.Message);
+                return null;
+            }
+        }
+        else
+        {
+            print("The File does not exist");
+            return null;
+        }
     }
 
     // Update is called once per frame

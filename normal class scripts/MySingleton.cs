@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,6 +19,36 @@ public class MySingleton
     public static bool getsPellet = false;
     public static int playerAttack;
 
+    public static string readItemsDataJson()
+    {
+        string filePath = "Assets/Data Files/items_data_json.txt";
+        string answer = "";
+
+        if (File.Exists(filePath))
+        {
+            try
+            {
+
+                using (StreamReader reader = new StreamReader(filePath)) // open file to read from
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        answer = answer + line;
+                    }
+                    return answer;
+                }
+            }
+            catch (Exception ex) // display any errors that occurred during file reading
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
     public static string flipDirection(string direction)
     {
         if (direction.Equals("north"))
