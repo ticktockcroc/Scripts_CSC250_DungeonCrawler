@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CollectionManager : MonoBehaviour
 {
     public GameObject pill1, pill2, pill3, pill4;
+    public string name1, name2, name3, name4;
+    public string cost1, cost2, cost3, cost4;
     private int selector;
-    private int[] itemSets = new int[100];
-    private int tracker = 0;
+    public TextMeshProUGUI itemName;
+    public TextMeshProUGUI itemCost;
+    private string jsonString;
+    public RootObject root = new RootObject();
+
     // Start is called before the first frame update
     void Start()
     {
-        string jsonString = MySingleton.readItemsDataJson(); //read JSON file with serialization
+        this.jsonString = MySingleton.readItemsDataJson(); //read JSON file with serialization
 
-        RootObject root = JsonUtility.FromJson<RootObject>(jsonString); //parse the JSON string
+        this.root = JsonUtility.FromJson<RootObject>(jsonString); //parse the JSON string
 
-        this.selector = Random.Range(0, 4);
-
-        itemSets[this.tracker] = this.selector;
+        this.selector = 0;
     }
 
     // Update is called once per frame
@@ -29,55 +33,63 @@ public class CollectionManager : MonoBehaviour
             this.pill2.gameObject.SetActive(false);
             this.pill3.gameObject.SetActive(false);
             this.pill4.gameObject.SetActive(false);
+            this.itemName.text = name1;
+            this.itemCost.text = cost1;
         }
         else if (selector == 1)
         {
-            this.pill1.gameObject.SetActive(true);
+            this.pill1.gameObject.SetActive(false);
             this.pill2.gameObject.SetActive(true);
             this.pill3.gameObject.SetActive(false);
             this.pill4.gameObject.SetActive(false);
+            this.itemName.text = name2;
+            this.itemCost.text = cost2;
         }
         else if (selector == 2)
         {
-            this.pill1.gameObject.SetActive(true);
-            this.pill2.gameObject.SetActive(true);
+            this.pill1.gameObject.SetActive(false);
+            this.pill2.gameObject.SetActive(false);
             this.pill3.gameObject.SetActive(true);
             this.pill4.gameObject.SetActive(false);
+            this.itemName.text = name3;
+            this.itemCost.text = cost3;
         }
         else if (selector == 3)
         {
-            this.pill1.gameObject.SetActive(true);
-            this.pill2.gameObject.SetActive(true);
-            this.pill3.gameObject.SetActive(true);
+            this.pill1.gameObject.SetActive(false);
+            this.pill2.gameObject.SetActive(false);
+            this.pill3.gameObject.SetActive(false);
             this.pill4.gameObject.SetActive(true);
+            this.itemName.text = name4;
+            this.itemCost.text = cost4;
         }
 
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+        if (Input.GetKeyUp(KeyCode.RightArrow) && selector < 3)
         {
-            this.selector = Random.Range(0, 4);
-            this.tracker++;
-            itemSets[this.tracker] = this.selector;
+            this.selector++;
         }
-        else if(Input.GetKeyUp(KeyCode.LeftArrow))
+        else if(Input.GetKeyUp(KeyCode.LeftArrow) && selector > 0)
         {
-            this.selector = Random.Range(0, 4);
-            this.tracker--;
-            itemSets[this.tracker] = this.selector;
+            this.selector--;
+        }
+        else if(Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            print("cannot move further");
         }
 
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        if (Input.GetKeyUp(KeyCode.Space) && pill1.activeSelf == true)
         {
             Debug.Log("attack boost");
         }
-        else if (Input.GetKeyUp(KeyCode.Alpha2))
+        else if (Input.GetKeyUp(KeyCode.Space) && pill2.activeSelf == true)
         {
             Debug.Log("max hp boost");
         }
-        else if (Input.GetKeyUp(KeyCode.Alpha3))
+        else if (Input.GetKeyUp(KeyCode.Space) && pill3.activeSelf == true)
         {
             Debug.Log("armor boost");
         }
-        else if (Input.GetKeyUp(KeyCode.Alpha4))
+        else if (Input.GetKeyUp(KeyCode.Space) && pill4.activeSelf == true)
         {
             Debug.Log("hp recovery");
         }
