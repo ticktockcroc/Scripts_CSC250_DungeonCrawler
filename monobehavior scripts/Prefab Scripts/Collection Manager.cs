@@ -77,19 +77,19 @@ public class CollectionManager : MonoBehaviour
             print("cannot move further");
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && pill1.activeSelf == true)
+        if (Input.GetKeyUp(KeyCode.A) && pill1.activeSelf == true)
         {
             Debug.Log("attack boost");
         }
-        else if (Input.GetKeyUp(KeyCode.Space) && pill2.activeSelf == true)
+        else if (Input.GetKeyUp(KeyCode.A) && pill2.activeSelf == true)
         {
             Debug.Log("max hp boost");
         }
-        else if (Input.GetKeyUp(KeyCode.Space) && pill3.activeSelf == true)
+        else if (Input.GetKeyUp(KeyCode.A) && pill3.activeSelf == true)
         {
             Debug.Log("armor boost");
         }
-        else if (Input.GetKeyUp(KeyCode.Space) && pill4.activeSelf == true)
+        else if (Input.GetKeyUp(KeyCode.A) && pill4.activeSelf == true)
         {
             Debug.Log("hp recovery");
         }
