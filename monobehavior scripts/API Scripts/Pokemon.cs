@@ -27,4 +27,13 @@ public class CollectionOfPokemon
     public string next;
     public string previous;
     public Pokemon[] results;
+
+    public void display()
+    {
+        Debug.Log($"Count: {this.count}, results: {this.results}");
+        for(int i = 0; i < this.count; i++) 
+        {
+            this.results[i].display();
+        }
+    }
 }
